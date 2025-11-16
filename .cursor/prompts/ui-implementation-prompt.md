@@ -28,6 +28,8 @@ Implement a maximum of 3 steps from the implementation plan, briefly summarize w
 
 Carefully analyze the implementation plan and rules. Pay special attention to the component structure, API integration requirements, and user interactions described in the plan.
 
+Initialize React app acording to UI plan. Create a relevant folder structure. add all nessesary dependencies. All files should be stored in folder 'frontend'
+
 Follow these steps to implement the frontend view:
 
 Component Structure:
