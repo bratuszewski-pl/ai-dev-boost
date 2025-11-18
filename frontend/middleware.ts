@@ -3,8 +3,12 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
 	// Check if route requires authentication
-	const isAuthRoute = request.nextUrl.pathname.startsWith('/app/(auth)')
-	const isProtectedRoute = request.nextUrl.pathname.startsWith('/app/')
+	const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || 
+		request.nextUrl.pathname.startsWith('/register')
+	const isProtectedRoute = request.nextUrl.pathname.startsWith('/notes') ||
+		request.nextUrl.pathname.startsWith('/shared') ||
+		request.nextUrl.pathname.startsWith('/categories') ||
+		request.nextUrl.pathname.startsWith('/search')
 
 	// Allow access to auth routes without authentication
 	if (isAuthRoute) {

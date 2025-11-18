@@ -9,7 +9,7 @@ Your task is to implement a frontend view based on a given implementation plan a
 First, review the implementation plan:
 
 <implementation_plan>
-refer to provided implementation plan
+(../../ai/ui-plan.md)
 </implementation_plan>
 
 Now, review the implementation rules:

@@ -98,7 +98,7 @@ export function LoginForm() {
 				<div className="mt-4 text-center text-sm">
 					<span className="text-muted-foreground">Do not have an account? </span>
 					<Link
-						href="/app/(auth)/register"
+						href="/register"
 						className="font-medium text-primary hover:underline"
 					>
 						Sign up

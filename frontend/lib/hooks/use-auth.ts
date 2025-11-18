@@ -32,7 +32,7 @@ export function useAuth() {
 				title: 'Login successful',
 				description: `Welcome back, ${data.user.username}!`,
 			})
-			router.push('/app/(notes)/notes')
+			router.push('/notes')
 		},
 		onError: (error: { statusCode?: number; message?: string }) => {
 			toast({
@@ -49,7 +49,7 @@ export function useAuth() {
 		mutationFn: logoutApi,
 		onSuccess: () => {
 			queryClient.clear()
-			router.push('/app/(auth)/login')
+			router.push('/login')
 			toast({
 				title: 'Logged out',
 				description: 'You have been successfully logged out.',
@@ -58,7 +58,7 @@ export function useAuth() {
 		onError: () => {
 			// Even if logout fails on server, clear local state
 			queryClient.clear()
-			router.push('/app/(auth)/login')
+			router.push('/login')
 		},
 	})
 
