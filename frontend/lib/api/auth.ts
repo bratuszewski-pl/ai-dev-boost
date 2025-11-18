@@ -2,7 +2,7 @@
  * Authentication API functions
  */
 
-import { apiRequest, saveAuthToken, removeAuthToken } from './api-client'
+import { apiRequest, saveAuthToken, removeAuthToken } from './../api-client'
 import type {
 	LoginRequest,
 	LoginResponse,
