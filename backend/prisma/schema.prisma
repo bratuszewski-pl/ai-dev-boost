@@ -1,0 +1,72 @@
+// Prisma Schema for NoteFlow MongoDB Database
+// Based on database design plan
+
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider = "mongodb"
+	url      = env("DATABASE_URL")
+}
+
+model User {
+	id        String   @id @default(auto()) @map("_id") @db.ObjectId
+	username  String   @unique @db.String
+	password  String   @db.String
+	createdAt String   @map("createdAt") @db.String
+	updatedAt String   @map("updatedAt") @db.String
+
+	notes     Note[]
+	categories Category[]
+
+	@@map("users")
+	@@index([username], name: "users_username_unique", unique: true)
+	@@index([createdAt], name: "users_createdAt_single")
+}
+
+model Note {
+	id               String   @id @default(auto()) @map("_id") @db.ObjectId
+	userId           String   @map("userId") @db.ObjectId
+	content          Json     // Embedded document: { text, links, images }
+	title            String?  @db.String
+	categoryId       String?  @map("categoryId") @db.ObjectId
+	categoryName     String?  @map("categoryName") @db.String
+	tags             String[] @db.Array(String)
+	keywords         String[] @db.Array(String)
+	vectorId         String?  @map("vectorId") @db.ObjectId
+	version          Int      @default(1)
+	aiAnalysisStatus String?  @map("aiAnalysisStatus") @db.String
+	sharedWith       Json?    @map("sharedWith") // Array of { userId, username, sharedAt }
+	createdAt        String   @map("createdAt") @db.String
+	updatedAt        String   @map("updatedAt") @db.String
+
+	user     User      @relation(fields: [userId], references: [id])
+	category Category? @relation(fields: [categoryId], references: [id])
+
+	@@map("notes")
+	@@index([userId, createdAt], name: "notes_userId_createdAt_compound")
+	@@index([userId, categoryId], name: "notes_userId_categoryId_compound")
+	@@index([userId, tags], name: "notes_userId_tags_compound")
+	@@index([userId, aiAnalysisStatus], name: "notes_userId_aiAnalysisStatus_compound")
+	// Note: Text index and sparse unique index on vectorId need to be created manually in MongoDB
+	// Text index: db.notes.createIndex({ "content.text": "text", "keywords": "text" }, { name: "notes_content_text_text" })
+	// Sparse unique index: db.notes.createIndex({ "vectorId": 1 }, { unique: true, sparse: true, name: "notes_vectorId_sparse_unique" })
+}
+
+model Category {
+	id        String   @id @default(auto()) @map("_id") @db.ObjectId
+	userId    String   @map("userId") @db.ObjectId
+	name      String   @db.String
+	noteCount Int?     @map("noteCount") @default(0)
+	createdAt String   @map("createdAt") @db.String
+	updatedAt String   @map("updatedAt") @db.String
+
+	user  User   @relation(fields: [userId], references: [id])
+	notes Note[]
+
+	@@map("categories")
+	@@index([userId, name], name: "categories_userId_name_compound")
+	@@index([userId], name: "categories_userId_single")
+}
+
